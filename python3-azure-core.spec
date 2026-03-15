@@ -17,7 +17,7 @@ BuildRequires:	python3-modules >= 1:3.9
 BuildRequires:	python3-setuptools
 %if %{with tests}
 BuildRequires:	python3-aiohttp >= 3.0
-BuildRequires:	python3-azure-storage
+BuildRequires:	python3-azure-storage-blob
 BuildRequires:	python3-isodate >= 0.6.1
 BuildRequires:	python3-opentelemetry-api >= 1.26
 BuildRequires:	python3-opentelemetry-api < 2

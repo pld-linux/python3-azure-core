@@ -17,7 +17,9 @@ BuildRequires:	python3-modules >= 1:3.9
 BuildRequires:	python3-setuptools
 %if %{with tests}
 BuildRequires:	python3-aiohttp >= 3.0
-BuildRequires:	python3-azure-storage-blob
+# for ignored tests only
+#BuildRequires:	python3-azure-storage-blob
+BuildRequires:	python3-flask
 BuildRequires:	python3-isodate >= 0.6.1
 BuildRequires:	python3-opentelemetry-api >= 1.26
 BuildRequires:	python3-opentelemetry-api < 2
@@ -50,10 +52,13 @@ bibliotek klienckich SDK dla Pythona.
 %py3_build
 
 %if %{with tests}
+# ignored tests require devtools_testutils, not available in sdist
 PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 \
 PYTEST_PLUGINS=pytest_asyncio.plugin,pytest_trio.plugin \
-PYTHONPATH=$(pwd):$(pwd)/tests/specs_sdk/modeltypes \
-%{__python3} -m pytest tests
+PYTHONPATH=$(pwd):$(pwd)/tests/specs_sdk/modeltypes:$(pwd)/tests/testserver_tests/coretestserver \
+%{__python3} -m pytest tests \
+	--ignore tests/test_tracing_live.py \
+	--ignore tests/async_tests/test_tracing_live_async.py
 %endif
 
 %install
